@@ -254,59 +254,138 @@ body{
             <!-- HEADER DESKTOP-->
             
 			<!-- MAIN CONTENT-->
-            <div class="main-content" >
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
-                    
-                    <?php
-                    include('Connection.php');
-                    if($_SESSION["id"]) 
-                    {
-                        $user=$_SESSION["id"];
-                        $pass=$_SESSION["pwd"];
+            <div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <?php
+            include('Connection.php');
+            if ($_SESSION["id"]) {
+                $user = $_SESSION["id"];
+                $pass = $_SESSION["pwd"];
 
-                        $sql="SELECT * FROM menu WHERE Item_Stock>0";
-                        $result1 = mysqli_query($con,$sql);
-                    }
+                $sql = "SELECT * FROM menu WHERE Item_Stock > 0";
+                $result1 = mysqli_query($con, $sql);
+            }
 
-                    echo "<form name='frmbuy' action='confirm_order.php' method='POST'>";
-                    echo "<table>
-                    <tr>
+            echo "<form name='frmbuy' action='confirm_order.php' method='POST'>";
+            echo "<table>
+                <tr>
                     <th width='80'>Sl No.</th>
                     <th>Item Name</th>
-                    <th>Price </th>
-                    <th>Stock </th>
-                    <th width='50'>Select</th>
-                    </tr>";
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th width='150'>Quantity</th>
+                </tr>";
 
-                    $i=1;
-                    while($row = mysqli_fetch_array($result1)) {
-                        echo "<tr>";
-                        echo "<td>" . $i . "</td>";
-                        echo "<td>" . $row['Item_Name'] . "</td>";
-                        echo "<td>" . $row['Item_Price'] . "</td>";
-                        echo "<td>" . $row['Item_Stock'] . "</td>";
-                        echo "<td align='center'> <input type='checkbox' value=". $row['Item_Name'] ." name='check_list[]'></td>";
-                        echo "</tr>";
-                        $i++;
-                    }
-                    echo "</table>";
-                    mysqli_close($con);
-                    ?>
-                    <br>
-                    <input type="submit" class='btn btn-success' value="Purchase">
-                    
-                    </form>
-                    </div>
-                </div>
-            </div>
-			<!-- END MAIN CONTENT-->
-			
-            <!-- END PAGE CONTAINER-->
+            $i = 1;
+            while ($row = mysqli_fetch_array($result1)) {
+                $itemName = $row['Item_Name'];
+                $itemPrice = $row['Item_Price'];
+                $itemStock = $row['Item_Stock'];
+                $inputName = "quantity_" . $i; // Unique name for each item's quantity field
+
+                echo "<tr>";
+                echo "<td>" . $i . "</td>";
+                echo "<td>" . $itemName . "</td>";
+                echo "<td>" . $itemPrice . "</td>";
+                echo "<td>" . $itemStock . "</td>";
+                echo "<td>
+                        <div class='quantity-selector'>
+                            <button type='button' class='btn-decrease' onclick='decreaseQuantity(\"$inputName\")'>-</button>
+                            <input type='number' name='quantities[$itemName]' id='$inputName' value='0' min='0' max='$itemStock' class='quantity-input' readonly>
+                            <button type='button' class='btn-increase' onclick='increaseQuantity(\"$inputName\", $itemStock)'>+</button>
+                        </div>
+                    </td>";
+                echo "</tr>";
+                $i++;
+            }
+            echo "</table>";
+            mysqli_close($con);
+            ?>
+            <br>
+            <input type="submit" class='btn btn-success' value="Purchase">
+            </form>
         </div>
-		
-
     </div>
+</div>
+<!-- END MAIN CONTENT-->
+<!-- END PAGE CONTAINER-->
+</div>
+
+<!-- Add CSS styles for styling the buttons -->
+<style>
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quantity-input {
+        width: 50px;
+        text-align: center;
+        font-size: 16px;
+        padding: 5px;
+        border: none;
+        border-top: 2px solid #28a745;
+        border-bottom: 2px solid #28a745;
+        outline: none;
+        transition: background-color 0.2s ease, border-color 0.3s ease;
+    }
+
+    .quantity-input:focus {
+        background-color: #f0f8f0;
+        border-color: #218838;
+    }
+
+    .btn-decrease, .btn-increase {
+        background-color: transparent; /* Remove background */
+        color: #28a745; /* Green text color */
+        border: none; /* Remove border */
+        font-size: 18px;
+        width: 30px; /* Adjust width */
+        height: 30px; /* Adjust height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out; /* Smooth transition for all effects */
+        margin: 0 8px;
+    }
+
+    .btn-decrease:hover, .btn-increase:hover {
+        color: white; /* Change text to white on hover */
+        background-color: #28a745; /* Green background on hover */
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+        transform: translateY(-4px); /* Lift effect on hover */
+    }
+
+    .btn-decrease:active, .btn-increase:active {
+        background-color: #218838; /* Darker green background on click */
+        transform: scale(0.95); /* Shrink on click */
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow on click */
+    }
+</style>
+
+<!-- JavaScript to handle quantity increment and decrement -->
+<script>
+    function increaseQuantity(id, maxStock) {
+        let quantityInput = document.getElementById(id);
+        let currentValue = parseInt(quantityInput.value);
+        if (currentValue < maxStock) {
+            quantityInput.value = currentValue + 1;
+        }
+    }
+
+    function decreaseQuantity(id) {
+        let quantityInput = document.getElementById(id);
+        let currentValue = parseInt(quantityInput.value);
+        if (currentValue > 0) {
+            quantityInput.value = currentValue - 1;
+        }
+    }
+</script>
+
+
 
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>

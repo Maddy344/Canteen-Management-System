@@ -15,11 +15,12 @@ if (count($_POST) > 0) {
         // Insert new user into the database, setting Wallet to 0.00 by default
         $sql = "INSERT INTO users (User_Id, First_Name, Last_Name, Dob, Password, Phone, Mail, Wallet)
                 VALUES ('" . $_POST["id"] . "', '" . $_POST["fname"] . "', '" . $_POST["lname"] . "', '" . $_POST["dob"] . "', '" . $_POST["pwd"] . "', '" . $_POST["phone"] . "', '" . $_POST["mail"] . "', 0.00)";
-        
+        echo `<script>window.location.href="/user/login.php" );</script>`;
         if (mysqli_query($con, $sql)) {
             $_SESSION["id"] = $_POST["id"];
-            header("Location: Dashboard.php");
-            exit; // Ensure script stops after redirection
+            
+            header("Location: /Canteen-Management-System-Using-Php-main/user/login.php"); // Use the absolute path
+            exit; 
         } else {
             $message = "Error in registration: " . mysqli_error($con);
         }

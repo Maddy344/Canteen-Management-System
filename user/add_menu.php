@@ -335,16 +335,7 @@ body{
     <!-- Main JS-->
     <script src="js/main.js"></script>
 
-<script type="text/javascript">
 
-    function add(id)
-    { 
-        alert('Menu Added !');
-        window.location.href='update_menu.php';
-    }
-
-
-</script>
 
 </body>
 

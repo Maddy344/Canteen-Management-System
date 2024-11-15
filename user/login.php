@@ -20,11 +20,13 @@ if(count($_POST)>0)
 if(isset($_SESSION["id"]))
 {
     include('file.php');
+    if($_SESSION["id"] && $_SESSION["pwd"]){
     if($admin == $_SESSION["id"]) {
         header("Location:ADashboard.php");
     } else {
         header("Location:Dashboard.php");
     }
+  }
 }
 ?>
 

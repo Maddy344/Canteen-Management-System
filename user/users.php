@@ -287,7 +287,7 @@ body{
                     <th >Phone</th>
                     <th >Mail</th>
                     <th >Wallet</th>
-                    <th width='100' >Edit</th>
+                    
                     </tr>";
                     $i=1;
                     while($row = mysqli_fetch_array($result1)) {
@@ -298,15 +298,14 @@ body{
                         echo "<td>" . $row['Phone'] . "</td>";
                         echo "<td>" . $row['Mail'] . "</td>";
                         echo "<td>" . $row['Wallet'] . "</td>";
-                        echo "<td> <a href='user_edit.php?id=$User_Id'>Edit</a></td>";
-                        echo "</tr>";
+                        
                         $i++;
                     }
                     echo "</table>";
                     mysqli_close($con);
                     ?>
                     <br>
-                    <a href="add_user.php"><input type='button' class='btn btn-success' value='Add User'></a>
+                    
                     </div>
                 </div>
             </div>

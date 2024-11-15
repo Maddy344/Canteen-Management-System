@@ -172,17 +172,21 @@
                                 
     <?php
         include('Connection.php');
+        
+
         if($_SESSION["id"]) {
             $user = $_SESSION["id"];
             $pass = $_SESSION["pwd"];
             $balance = 0;
             
+            
         
             $sql = "SELECT * FROM users;";
             $result = mysqli_query($con, $sql);
-        
+            
             for ($i = 0; $i < mysqli_num_rows($result); $i++) {
                 $row = mysqli_fetch_array($result);
+                echo "<script>console.log('Debug Objects: " . json_encode($row) . "' );</script>";
         
                 if (($user == $row['User_Id']) && ($pass == $row['Password'])) {
                      // Use user's photo or default if not available
