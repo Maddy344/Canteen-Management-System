@@ -34,7 +34,7 @@ if($_SESSION["id"])
 				mysqli_query($con,"update users set Password='$pass1' where User_Id='$user'");
 				$sql="INSERT INTO `status`(`User_Id`, `Notification`) VALUES ('$user','Password changed, on $Date $Time. ')";
 				$result=mysqli_query($con,$sql);
-				echo "<script>alert('Successfully Updated')
+				
 				window.location.href='logout.php'
 				</script>";
 				exit;

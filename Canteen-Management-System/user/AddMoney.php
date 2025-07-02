@@ -7,7 +7,7 @@ session_start();
 <html lang="en">
 <style>
 table {
-    width: 100%; 
+    width: 30%;
     border-collapse: collapse;
 }
 
@@ -27,7 +27,7 @@ th {text-align: left;}
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Order Prompt</title>
+    <title>Add Money</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -49,7 +49,7 @@ th {text-align: left;}
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-    <style>
+	<style>
 * {
     box-sizing: border-box;
 }
@@ -79,28 +79,28 @@ th {text-align: left;}
 
 <style>
 .transparent_btn {
-    display: inline-block;
-    padding: 10px 14px;
-    
-    color: #FFFF00; 
-    
-    border: 1px solid #FFFF00;
-    width:300px;
-    text-decoration: none;
-    font-size: 25px;
-    line-height: 120%;
-    background-color: rgba(255,255,255, 0);
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-transition: background-color 300ms ease;
-    -moz-transition: background-color 300ms ease;
-    transition: background-color 300ms ease;
-    cursor: pointer;
+	display: inline-block;
+	padding: 10px 14px;
+	
+	color: #FFFF00; 
+	
+	border: 1px solid #FFFF00;
+	width:300px;
+	text-decoration: none;
+	font-size: 25px;
+	line-height: 120%;
+	background-color: rgba(255,255,255, 0);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-transition: background-color 300ms ease;
+	-moz-transition: background-color 300ms ease;
+	transition: background-color 300ms ease;
+	cursor: pointer;
 }
 .transparent_btn:hover {
-    background-color: rgba(255,255,255, 0.3);
-    color: #000000;
+	background-color: rgba(255,255,255, 0.3);
+	color: #000000;
 }
 
 body{
@@ -115,8 +115,8 @@ body{
     /* Full height */
     height: 100%;
     width:100%;
-    
-    background-repeat: no-repeat;
+	
+	background-repeat: no-repeat;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -138,43 +138,35 @@ body{
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="has-sub">
+                        <li class="active has-sub">
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
                         <li>
-                            <a href="update_stock.php">
-                                <i class="fa fa-cart-plus"></i>Update Stock</a>
+                            <a href="purchase.php">
+                                <i class="fa fa-cart-plus"></i>Purchase</a>
                         </li>
                         <li>
-                            <a href="update_menu.php">
-                                <i class="fa fa-table"></i>Update Menu</a>
+                            <a href="food_menu.php">
+                                <i class="fa fa-table"></i>Menu</a>
                         </li>
                         <li>
-                            <a href="users.php">
-                                <i class="far fa-user"></i>Users</a>
-                        </li>
-                        <li >
-                            <a href="order_recieved.php">
+                            <a href="orders.php">
                                 <i class="far fa-clock"></i>Orders</a>
                         </li>
                         <li>
-                            <a href="payments.php">
-                                <i class="zmdi zmdi-money-box"></i>Transactions</a>
+                            <a href="notifications.php">
+                                <i class="far fa-bell"></i>Notifications</a>
                         </li>
-                        <li class="active">
-                            <a href="order_prompt.php">
-                                <i class="far fa-bell"></i>Order Prompt</a>
-                        </li>
-                        
+                       
                         </li>
                     </ul>
                 </nav>
             </div>
         </aside>
         <!-- END MENU SIDEBAR-->
-    
-        
+	
+		
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             
@@ -185,10 +177,9 @@ body{
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
                                
-                            </form>
-                            <div class="title-3" align='right'>
-                    
-    <!-- Php codes -->
+							<div class="title-3" align='right'>
+					
+	<!-- Php codes -->
                             
 <?php
     include('Connection.php');
@@ -202,9 +193,14 @@ body{
 
         for($i=0;$i<mysqli_num_rows($result);$i++)
         {
+            //  $use[]=mysqli_result($result,$i,"UserId");
+            //  $pas[]=mysqli_result($result,$i,"Password");
+            //  $phot[]=mysqli_result($result,$i,"Photo");
+            //  $mail[]=mysqli_result($result,$i,"Mail");
          
          $row = mysqli_fetch_array($result);
 
+        
         if(($user==$row['User_Id']) && ($pass==$row['Password']))
         {
             $photo="profile.jpg";
@@ -222,13 +218,13 @@ body{
                             <div>
                                 <div class='account-wrap'>
                                     <div class='account-item clearfix js-item-menu'>
-                                        
+                                       
                                         <div class='content'>
                                             <a class='js-acc-btn' href='#'>$user</a>
                                         </div>
                                         <div class='account-dropdown js-dropdown'>
                                             <div class='info clearfix'>
-                                         
+                                            
                                             </div>";
  ?>
 
@@ -265,56 +261,57 @@ body{
             <div class="main-content" >
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                    
+                    <center><br><br><br>
                     <?php
                     include('Connection.php');
                     if($_SESSION["id"]) 
                     {
                         $user=$_SESSION["id"];
                         $pass=$_SESSION["pwd"];
-
-                        $sql="SELECT * FROM orders WHERE Status='Processing' order by id DESC ";
-                        $result1 = mysqli_query($con,$sql);
                     }
-                    ?>
-                    <!--<form name='frmorder' action='accept.php' method='POST'>-->
-                    <table>
-                    <tr>
-                    <th width='80'>Sl No.</th>
-                    <th>Order Id</th>
-                    <th>Item Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Price</th>
-                    <th>Prompt</th>
-                    </tr>
-                    <?php $i=1; 
-                    while($row = mysqli_fetch_array($result1)) {
-                        $Id=$row['id']; ?>
-                        <tr id="<?php echo $row['id']; ?>" >
-                        <td><?php echo $i; ?></td>
-                        <td><?php echo $row['Order_Id'] ; ?></td>
-                        <td><?php echo $row['Item_Name'] ; ?></td>
-                        <td><?php echo $row['Date'] ; ?></td>
-                        <td><?php echo $row['Time'] ; ?></td>
-                        <td><?php echo $row['Total'] ; ?></td>
-                        <td align="center">
-                        <input type='button' class='btn btn-success' value='Delivered' onclick="Accept(<?php echo $Id ; ?>)"></td>
-                        </tr>
-                        <?php $i++;
-                    }
+                    echo "<form name='addmoney' action='add.php' method='POST'>";
+                    echo "<table>";                       
+                    echo "<tr align='center'>";
+                    echo "<th > Add Money </th></tr>";
+                    
+                    echo "<tr align='center' ><td><input style='width:100%;' type='number' name='add' placeholder='Money to Wallet'></td></tr>";
+                    
                     echo "</table>";
+                    
+                     // Initialize a variable
+                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        $add = $_POST['add']; // Access the form variable
+                        if (is_numeric($add)) {
+                            $balance += $add; // Add the value to the wallet
+                    
+                            // Assuming you have a connection established in $con
+                            $query = "UPDATE canteen.users SET Wallet = $balance WHERE User_Id = '$user'";
+                            if (mysqli_query($con, $query)) {
+                                echo "Balance updated successfully.";
+                            } else {
+                                echo "Error updating balance: " . mysqli_error($con);
+                            }
+                        } else {
+                            echo "Please enter a valid number.";
+                        }
+                    }
+
                     mysqli_close($con);
                     ?>
-                <!--</form>-->
+                    <br>
+                    <input type='submit' class='btn btn-success' value='Add Money'>
+                    <input type='reset' class='btn btn-danger' value='Cancel' >
+                    
+                    </form>
                     </div>
+                </center>
                 </div>
             </div>
-            <!-- END MAIN CONTENT-->
+            <!-- END MAIN CONTENT-->";
             
             <!-- END PAGE CONTAINER-->
         </div>
-        
+		
 
     </div>
 
@@ -341,29 +338,9 @@ body{
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-<script type="text/javascript">
-    function Accept(id)
-    {
-        $.ajax({
-            type: "POST",
-            url: "accept.php",
-            async: false,
-            data: {
-                id: id,
-                Approve: 1,
-            },
-            success: function(){
-            
-            },
- 
-            complete: function() {
-                   // success alerts
-                  alert('Delivered Successfully!');
-                  window.location.href='order_recieved.php';
 
-         }
-        });
-    }
+<script type="text/javascript">
+
 </script>
 
 </body>

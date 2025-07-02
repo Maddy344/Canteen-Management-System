@@ -7,7 +7,7 @@ session_start();
 <html lang="en">
 <style>
 table {
-    width: 70%;
+    width: 100%; 
     border-collapse: collapse;
 }
 
@@ -27,7 +27,7 @@ th {text-align: left;}
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Edit Menu</title>
+    <title>Order Prompt</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -49,7 +49,7 @@ th {text-align: left;}
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-	<style>
+    <style>
 * {
     box-sizing: border-box;
 }
@@ -79,28 +79,28 @@ th {text-align: left;}
 
 <style>
 .transparent_btn {
-	display: inline-block;
-	padding: 10px 14px;
-	
-	color: #FFFF00; 
-	
-	border: 1px solid #FFFF00;
-	width:300px;
-	text-decoration: none;
-	font-size: 25px;
-	line-height: 120%;
-	background-color: rgba(255,255,255, 0);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-transition: background-color 300ms ease;
-	-moz-transition: background-color 300ms ease;
-	transition: background-color 300ms ease;
-	cursor: pointer;
+    display: inline-block;
+    padding: 10px 14px;
+    
+    color: #FFFF00; 
+    
+    border: 1px solid #FFFF00;
+    width:300px;
+    text-decoration: none;
+    font-size: 25px;
+    line-height: 120%;
+    background-color: rgba(255,255,255, 0);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-transition: background-color 300ms ease;
+    -moz-transition: background-color 300ms ease;
+    transition: background-color 300ms ease;
+    cursor: pointer;
 }
 .transparent_btn:hover {
-	background-color: rgba(255,255,255, 0.3);
-	color: #000000;
+    background-color: rgba(255,255,255, 0.3);
+    color: #000000;
 }
 
 body{
@@ -115,8 +115,8 @@ body{
     /* Full height */
     height: 100%;
     width:100%;
-	
-	background-repeat: no-repeat;
+    
+    background-repeat: no-repeat;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -138,15 +138,15 @@ body{
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li class="has-sub">
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
-						<li>
+                        <li>
                             <a href="update_stock.php">
                                 <i class="fa fa-cart-plus"></i>Update Stock</a>
                         </li>
-						<li>
+                        <li>
                             <a href="update_menu.php">
                                 <i class="fa fa-table"></i>Update Menu</a>
                         </li>
@@ -154,7 +154,7 @@ body{
                             <a href="users.php">
                                 <i class="far fa-user"></i>Users</a>
                         </li>
-						<li>
+                        <li >
                             <a href="order_recieved.php">
                                 <i class="far fa-clock"></i>Orders</a>
                         </li>
@@ -162,17 +162,19 @@ body{
                             <a href="payments.php">
                                 <i class="zmdi zmdi-money-box"></i>Transactions</a>
                         </li>
-						<li>
+                        <li class="active">
                             <a href="order_prompt.php">
                                 <i class="far fa-bell"></i>Order Prompt</a>
                         </li>
-					</ul>
+                        
+                        </li>
+                    </ul>
                 </nav>
             </div>
         </aside>
         <!-- END MENU SIDEBAR-->
-	
-		
+    
+        
         <!-- PAGE CONTAINER-->
         <div class="page-container">
             
@@ -182,11 +184,11 @@ body{
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                              
+                               
                             </form>
-							<div class="title-3" align='right'>
-					
-	<!-- Php codes -->
+                            <div class="title-3" align='right'>
+                    
+    <!-- Php codes -->
                             
 <?php
     include('Connection.php');
@@ -220,19 +222,13 @@ body{
                             <div>
                                 <div class='account-wrap'>
                                     <div class='account-item clearfix js-item-menu'>
-                                      
+                                        
                                         <div class='content'>
                                             <a class='js-acc-btn' href='#'>$user</a>
                                         </div>
                                         <div class='account-dropdown js-dropdown'>
                                             <div class='info clearfix'>
-                                             
-                                                <div class='content'>
-                                                    <h5 class='name'>
-                                                        <a href='#'>$user</a>
-                                                    </h5>
-                                                    <span class='email'>$email</span>
-                                                </div>
+                                         
                                             </div>";
  ?>
 
@@ -272,53 +268,53 @@ body{
                     
                     <?php
                     include('Connection.php');
-                    $Item_Id=$_GET['id'];
                     if($_SESSION["id"]) 
                     {
                         $user=$_SESSION["id"];
                         $pass=$_SESSION["pwd"];
 
-                        $sql="SELECT * FROM menu WHERE Item_Id=$Item_Id ";
+                        $sql="SELECT * FROM orders WHERE Status='Processing' order by id DESC ";
                         $result1 = mysqli_query($con,$sql);
                     }
-                    echo "<form name='frmbuy' action='update.php' method='POST'>";
-                    echo "<table>
-                    <tr align='center'>
+                    ?>
+                    <!--<form name='frmorder' action='accept.php' method='POST'>-->
+                    <table>
+                    <tr>
                     <th width='80'>Sl No.</th>
+                    <th>Order Id</th>
                     <th>Item Name</th>
-                    <th>Price </th>
-                    <th >Stock</th>
-                    </tr>";
-                    $i=1;
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Price</th>
+                    <th>Prompt</th>
+                    </tr>
+                    <?php $i=1; 
                     while($row = mysqli_fetch_array($result1)) {
-                        $Item_Id=$row['Item_Id'];
-                        $Item_Stock=$row['Item_Stock'];
-                        $Item_Name=$row['Item_Name'];
-                        $Item_Price=$row['Item_Price'];
-                        echo "<tr>";
-                        echo "<td>" . $i . "</td>";
-                        echo "<td><input type='text' name='Item_Name' value='$Item_Name'></td>";
-                        echo "<td><input type='text' name='Item_Price' value='$Item_Price'></td>";
-                        echo "<td><input type='text' name='Item_Stock' value='$Item_Stock'></td>";
-                        echo "</tr><input type='text' name='Item_Id' value='$Item_Id' hidden>";
-                        $i++;
+                        $Id=$row['id']; ?>
+                        <tr id="<?php echo $row['id']; ?>" >
+                        <td><?php echo $i; ?></td>
+                        <td><?php echo $row['Order_Id'] ; ?></td>
+                        <td><?php echo $row['Item_Name'] ; ?></td>
+                        <td><?php echo $row['Date'] ; ?></td>
+                        <td><?php echo $row['Time'] ; ?></td>
+                        <td><?php echo $row['Total'] ; ?></td>
+                        <td align="center">
+                        <input type='button' class='btn btn-success' value='Delivered' onclick="Accept(<?php echo $Id ; ?>)"></td>
+                        </tr>
+                        <?php $i++;
                     }
                     echo "</table>";
                     mysqli_close($con);
                     ?>
-                    <br>
-                    <input type='submit' class='btn btn-success' value='Update' onClick="update(<?php echo $Item_Id; ?>)">
-                    
-                    
-                    </form>
+                <!--</form>-->
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT-->";
+            <!-- END MAIN CONTENT-->
             
             <!-- END PAGE CONTAINER-->
         </div>
-		
+        
 
     </div>
 
@@ -344,69 +340,30 @@ body{
     </script>
 
     <!-- Main JS-->
-
     <script src="js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
-
-function update(id) { 
-    $.ajax({
-        type: "POST",
-        url: "update.php",
-        async: false,
-        data: {
-            id: id,
-            update: 1,
-        },
-        success: function() {
-            // You can put any additional logic on success if needed
-            Swal.fire({
-                title: 'Success!',
-                text: 'Menu Updated!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                // Redirect to the update menu page after user confirms
-                window.location.href = 'update_menu.php';
-            }2000);
+    function Accept(id)
+    {
+        $.ajax({
+            type: "POST",
+            url: "accept.php",
+            async: false,
+            data: {
+                id: id,
+                Approve: 1,
+            },
+            success: function(){
             
-        },
-                complete: function() {
-            // Use SweetAlert2 for a success message
-            
-        }
-    });
-}
+            },
+ 
+            complete: function() {
+                   // success alerts
+                  
+                  window.location.href='order_recieved.php';
 
-
-function del(id) { 
-    $.ajax({
-        type: "POST",
-        url: "delete.php",
-        async: false,
-        data: {
-            id: id,
-            delete: 1,
-        },
-        success: function() {
-            // Additional success logic can go here if needed
-            Swal.fire({
-                title: 'Success!',
-                text: 'Menu Deleted!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                // Redirect to the update menu page after user confirmation
-                window.location.href = 'update_menu.php';
-            });
-        },
-        complete: function() {
-            // Use SweetAlert2 for a success message
-            
-        }
-    });
-}
-
+         }
+        });
+    }
 </script>
 
 </body>

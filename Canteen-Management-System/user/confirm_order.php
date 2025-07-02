@@ -7,7 +7,7 @@ session_start();
 <html lang="en">
 <style>
 table {
-    width: 30%;
+    width: 70%;
     border-collapse: collapse;
 }
 
@@ -27,7 +27,7 @@ th {text-align: left;}
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Add Money</title>
+    <title>Dashboard</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -131,18 +131,18 @@ body{
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
-                    <img src="images/icon/cps1.png" alt="Canteen Management System" />
+                <a href="https://parkurcars.000webhostapp.com/">
+                    <img src="images/icon/cps1.png" alt="Car Parking System" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li class="has-sub">
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
-                        <li>
+						<li class="active" >
                             <a href="purchase.php">
                                 <i class="fa fa-cart-plus"></i>Purchase</a>
                         </li>
@@ -158,9 +158,10 @@ body{
                             <a href="notifications.php">
                                 <i class="far fa-bell"></i>Notifications</a>
                         </li>
-                       
+                        <li class="has-sub">
+                            
                         </li>
-                    </ul>
+					</ul>
                 </nav>
             </div>
         </aside>
@@ -172,15 +173,16 @@ body{
             
             <!-- HEADER DESKTOP-->
             <header class="header-desktop">
-                <div class="section__content section__content--p30">
+                <div class="section_content section_content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                               
+                              
+                            </form>
 							<div class="title-3" align='right'>
-					
-	<!-- Php codes -->
-                            
+							
+							<!-- Php codes -->
+							
 <?php
     include('Connection.php');
     if($_SESSION["id"]) 
@@ -188,15 +190,11 @@ body{
         $user=$_SESSION["id"];
         $pass=$_SESSION["pwd"];
         $balance=0;
-        $sql="select * from users ;";
+        $sql="select * from users";
         $result=mysqli_query($con,$sql);
 
         for($i=0;$i<mysqli_num_rows($result);$i++)
         {
-            //  $use[]=mysqli_result($result,$i,"UserId");
-            //  $pas[]=mysqli_result($result,$i,"Password");
-            //  $phot[]=mysqli_result($result,$i,"Photo");
-            //  $mail[]=mysqli_result($result,$i,"Mail");
          
          $row = mysqli_fetch_array($result);
 
@@ -207,28 +205,32 @@ body{
             $email=$row['Mail'] ;
             $balance=$row["Wallet"];
         }    
-        }
     }
+}
 
-     
-    // echo "$user $balance uploads/$photo $email"; 
-                                                
-                echo "  <input class='au-input' type='text' value='Balance: ₹ $balance' readonly/>
-                            </div>
+	 
+	// echo "$user $balance uploads/$photo $email"; 
+												
+				echo "	<input class='au-input' type='text' value='Balance: ₹ $balance' readonly/>
+							</div>
                             <div>
                                 <div class='account-wrap'>
                                     <div class='account-item clearfix js-item-menu'>
-                                       
+                                    
                                         <div class='content'>
                                             <a class='js-acc-btn' href='#'>$user</a>
                                         </div>
                                         <div class='account-dropdown js-dropdown'>
                                             <div class='info clearfix'>
                                             
+                                                <div class='content'>
+                                                    <h5 class='name'>
+                                                        <a href='#'>$user</a>
+                                                    </h5>
+                                                    <span class='email'>$email</span>
+                                                </div>
                                             </div>";
- ?>
-
-
+											?>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="profile.php">
@@ -257,40 +259,88 @@ body{
             </header>
             <!-- HEADER DESKTOP-->
             
-            <!-- MAIN CONTENT-->
+			<!-- MAIN CONTENT-->
             <div class="main-content" >
-                <div class="section__content section__content--p30">
+                <div class="section_content section_content--p30">
                     <div class="container-fluid">
-                    <center><br><br><br>
+                    
                     <?php
                     include('Connection.php');
                     if($_SESSION["id"]) 
                     {
                         $user=$_SESSION["id"];
                         $pass=$_SESSION["pwd"];
-                    }
-                    echo "<form name='addmoney' action='add.php' method='POST'>";
-                    echo "<table>";                       
-                    echo "<tr align='center'>";
-                    echo "<th > Add Money </th></tr>";
-                    echo "<tr align='center'><td><input style='width:100%;' type='text' name='User_Id' placeholder='Username' ></td></tr>";
-                    echo "<tr align='center' ><td><input style='width:100%;' type='number' name='add' placeholder='Money to Wallet'></td></tr>";
-                    echo "<tr align='center' ><td><input style='width:100%;' type='Password' name='Password' placeholder='Password'</td></tr>";
 
+                        $sql="SELECT * FROM menu WHERE Item_Stock>0";
+                        $result1 = mysqli_query($con,$sql);
+                    }
+
+                    echo "<form name='frmbuy' action=''>";
+                    echo "<table>
+                    <tr>
+                    <th width='80'>Sl No.</th>
+                    <th>Item Name</th>
+                    <th width='100'>Price </th>
+                    <th width='100'>Count </th>
+                    <th width='100'>Total Cost</th>
+                    </tr>";
+
+                    $i=1;
+                    $sum=0.00;
+
+                    //$listcount=0;
+                    
+                    $j=0;
+                    //$arr_val = array();
+                    //$txtlist = $_POST['txt_list'];
+
+                    /*if(isset($_POST['txt_list'])){
+                        $arr_val = array_values($_POST['txt_list']);
+                    }*/
+
+                    while($row = mysqli_fetch_array($result1)) {
+                        if(!empty($_POST['check_list'])) {
+                            foreach($_POST['check_list'] as $check) {
+                                
+                                //$cnt=$txtlist[$j];
+
+                                if ($row['Item_Name'] == $check ) {
+                                    
+                                    $cnt=$_POST['txt_list'][$j];
+                                    
+                                    //echo $row['Item_Name'];
+                      
+                        echo "<tr>";
+                        echo "<td>" . $i .  "</td>";
+                        echo "<td>" . $row['Item_Name'] . "</td>";
+                        echo "<td width='100'> <input style='width:80px;' value='".$row['Item_Price']."' type='text' id='price".$i."' disabled ></td>";
+                        echo "<td width='100'> <input style='width:80px;' type='text' value='".$cnt."' id='count".$i."' name='count".$i."' disabled></td>";
+                        echo "<td width='100'> <input style='width:80px;' type='text' value='".$row['Item_Price'] * $cnt ."' id='total".$i."' name='total".$i."' disabled></td>";
+                        echo "</tr>";
+                        $sum+=$row['Item_Price'];
+                        $i++;
+                        $j++;   
+                         }
+                                         
+                         }
+                        }
+                    }
+                    echo "<tr>
+                        <th colspan='4'>Total Amount</th>
+                        <th><input style='width:80px;' type='text' value='$sum' id='sumtotal' disabled></th>
+                        </tr>";
                     echo "</table>";
                     mysqli_close($con);
                     ?>
                     <br>
-                    <input type='submit' class='btn btn-success' value='Add Money'>
-                    <input type='reset' class='btn btn-danger' value='Cancel' >
-                    
+                    <input type="button" class='btn btn-success' value="Calculate" onclick="Calc();">
+                    <input type="button" class='btn btn-success' value="Confirm" onclick="Confirm();">
                     </form>
                     </div>
-                </center>
                 </div>
             </div>
-            <!-- END MAIN CONTENT-->";
-            
+			<!-- END MAIN CONTENT-->
+			
             <!-- END PAGE CONTAINER-->
         </div>
 		
@@ -320,12 +370,135 @@ body{
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script type="text/javascript">
+  function Calc()
+  { 
+    var sumtot=0
+    <?php
+    include('Connection.php');
+    $sql="SELECT * FROM menu WHERE Item_Stock>0";
+    $result1 = mysqli_query($con,$sql);
+    $i=1;
+    while($row = mysqli_fetch_array($result1)) {
+        if(!empty($_POST['check_list'])) {
+            foreach($_POST['check_list'] as $check) {
+                if ($row['Item_Name'] == $check ) {
+                    //$countitem[$i]=$_POST['count$i'];
+                echo"  
+                count=document.getElementById('count$i').value
+                price=document.getElementById('price$i').value
+                var sum = count*price
+                var sumtot=sumtot+sum
+                document.getElementById('total$i').value = sum 
+                document.getElementById('sumtotal').value = sumtot ";
+                //
+                $i++;
+                }
+            }
+        }
+    }
 
+    ?>
+  }
+  function Confirm(id) {
+    // PHP Block - Fetch Menu Items and Initialize Order Details
+    <?php
+    include('Connection.php');
+    $sql = "SELECT * FROM menu WHERE Item_Stock > 0";
+    $result1 = mysqli_query($con, $sql);
+    $i = 1;
+    date_default_timezone_set('Asia/Kolkata');
+    $Date = date("d/m/Y");
+    $Time = date("h:i:s A");
+    $tid = rand(1000, 1000000);
+    $orid = "od_" . $user . $tid;
+    $trd = "tr_" . $user . $tid;
+
+    while ($row = mysqli_fetch_array($result1)) {
+        if (!empty($_POST['check_list'])) {
+            foreach ($_POST['check_list'] as $check) {
+                if ($row['Item_Name'] == $check) {
+                    $itemcount = 1;
+                    $total = $itemcount * $row['Item_Price'];
+                    $sql = "INSERT INTO orders (Order_Id, Date, Time, User_Id, Item_Name, Item_Price, Item_Count, Total) VALUES ('$orid', '$Date', '$Time', '$user', '" . $row['Item_Name'] . "', '" . $row['Item_Price'] . "', '$itemcount', '$total')";
+                    mysqli_query($con, $sql);
+                    $text = "Purchased $itemcount $check..";
+                    $sql1 = "INSERT INTO transaction (trans_Id, User_Id, trans_Date, trans_Time, Details, Amount) VALUES('$trd','$user','$Date','$Time','$text','$total')";
+                    mysqli_query($con, $sql1);
+                    mysqli_query($con, "UPDATE users SET Wallet = Wallet-$total WHERE User_Id = '$user';");
+                    mysqli_query($con, "UPDATE menu SET Item_Stock = Item_Stock-$itemcount WHERE Item_Name = '$check'");
+                    $i++;
+                }
+            }
+        }
+    }
+    ?>
+
+    // Razorpay Payment Setup
+    var totalAmount = document.getElementById('sumtotal').value;
+    if (totalAmount <= 0) {
+        alert("Please select items to purchase.");
+        return;
+    }
+
+    var options = {
+        "key": "rzp_test_mVoApknJRKRs0w", // Replace with your Razorpay Key ID
+        "amount": totalAmount * 100, // in paise
+        "currency": "INR",
+        "name": "Amrita Canteen Payment",
+        "description": "Purchase Order",
+        "image": "images/icon/cps1.png", // Replace with your logo URL
+        "handler": function (response) {
+            // On successful payment, run AJAX to complete order and transaction
+            $.ajax({
+    type: "POST",
+    url: "confirm.php",
+    async: false,
+    data: {
+        id: id,
+        Confirm: 1,
+        payment_id: response.razorpay_payment_id,
+        total: totalAmount
+    },
+    success: function () {
+        Swal.fire({
+            title: 'Success!',
+            text: 'Payment successful! Your order has been placed.',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+        }).then(() => {
+            window.location.href = 'orders.php'; // Redirect to orders page
+        });
+    },
+    error: function () {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Payment successful, but order confirmation failed. Please contact support.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    }
+});
+
+        },
+        "prefill": {
+            "name": "<?php echo $user; ?>",
+            "email": "<?php echo $email; ?>"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open(); // Opens Razorpay payment window
+}
 </script>
 
 </body>
 
 </html>
-<!-- end document-->
+<!-- end document-->

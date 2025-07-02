@@ -25,9 +25,10 @@ th {text-align: left;}
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>Add Menu</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -131,8 +132,8 @@ body{
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="https://parkurcars.000webhostapp.com/">
-                    <img src="images/icon/cps1.png" alt="Car Parking System" />
+                <a href="#">
+                    <img src="images/icon/cps1.png" alt="Canteen Management System" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
@@ -142,25 +143,31 @@ body{
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
-						<li class="active" >
-                            <a href="purchase.php">
-                                <i class="fa fa-cart-plus"></i>Purchase</a>
+						<li>
+                            <a href="update_stock.php">
+                                <i class="fa fa-cart-plus"></i>Update Stock</a>
+                        </li>
+						<li class="active">
+                            <a href="update_menu.php">
+                                <i class="fa fa-table"></i>Update Menu</a>
                         </li>
                         <li>
-                            <a href="food_menu.php">
-                                <i class="fa fa-table"></i>Menu</a>
+                            <a href="users.php">
+                                <i class="far fa-user"></i>Users</a>
                         </li>
-                        <li>
-                            <a href="orders.php">
+						<li>
+                            <a href="order_recieved.php">
                                 <i class="far fa-clock"></i>Orders</a>
                         </li>
                         <li>
-                            <a href="notifications.php">
-                                <i class="far fa-bell"></i>Notifications</a>
+                            <a href="payments.php">
+                                <i class="zmdi zmdi-money-box"></i>Transactions</a>
                         </li>
-                       
-                            </ul>
+						<li>
+                            <a href="order_prompt.php">
+                                <i class="far fa-bell"></i>Order Prompt</a>
                         </li>
+						
 					</ul>
                 </nav>
             </div>
@@ -177,12 +184,12 @@ body{
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                              
+                            
                             </form>
 							<div class="title-3" align='right'>
-							
-<!-- Php codes -->
-							
+					
+	<!-- Php codes -->
+                            
 <?php
     include('Connection.php');
     if($_SESSION["id"]) 
@@ -190,7 +197,7 @@ body{
         $user=$_SESSION["id"];
         $pass=$_SESSION["pwd"];
         $balance=0;
-        $sql="select * from users";
+        $sql="select * from users ;";
         $result=mysqli_query($con,$sql);
 
         for($i=0;$i<mysqli_num_rows($result);$i++)
@@ -198,21 +205,20 @@ body{
          
          $row = mysqli_fetch_array($result);
 
-        
         if(($user==$row['User_Id']) && ($pass==$row['Password']))
         {
             $photo="profile.jpg";
             $email=$row['Mail'] ;
             $balance=$row["Wallet"];
         }    
+        }
     }
-}
 
-	 
-	// echo "$user $balance uploads/$photo $email"; 
-												
-				echo "	<input class='au-input' type='text' value='Balance: ₹ $balance' readonly/>
-							</div>
+     
+    // echo "$user $balance uploads/$photo $email"; 
+                                                
+                echo "  <input class='au-input' type='text' value='Balance: ₹ $balance' readonly/>
+                            </div>
                             <div>
                                 <div class='account-wrap'>
                                     <div class='account-item clearfix js-item-menu'>
@@ -223,8 +229,16 @@ body{
                                         <div class='account-dropdown js-dropdown'>
                                             <div class='info clearfix'>
                                              
+                                                <div class='content'>
+                                                    <h5 class='name'>
+                                                        <a href='#'>$user</a>
+                                                    </h5>
+                                                
+                                                </div>
                                             </div>";
-											?>
+ ?>
+
+
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="profile.php">
@@ -253,139 +267,105 @@ body{
             </header>
             <!-- HEADER DESKTOP-->
             
-			<!-- MAIN CONTENT-->
+            <!-- MAIN CONTENT-->
             <div class="main-content">
     <div class="section__content section__content--p30">
         <div class="container-fluid">
+
             <?php
             include('Connection.php');
+
             if ($_SESSION["id"]) {
                 $user = $_SESSION["id"];
                 $pass = $_SESSION["pwd"];
-
-                $sql = "SELECT * FROM menu WHERE Item_Stock > 0";
-                $result1 = mysqli_query($con, $sql);
             }
 
-            echo "<form name='frmbuy' action='confirm_order.php' method='POST'>";
-            echo "<table>
-                <tr>
-                    <th width='80'>Sl No.</th>
-                    <th>Item Name</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th width='150'>Quantity</th>
-                </tr>";
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Fetch the submitted item details
+                $item_name = trim($_POST['Item_Name']);
+                $item_price = trim($_POST['Item_Price']);
+                $item_stock = trim($_POST['Item_Stock']);
 
-            $i = 1;
-            while ($row = mysqli_fetch_array($result1)) {
-                $itemName = $row['Item_Name'];
-                $itemPrice = $row['Item_Price'];
-                $itemStock = $row['Item_Stock'];
-                $inputName = "quantity_" . $i; // Unique name for each item's quantity field
+                // Check if the item name already exists in the database
+                $query = "SELECT * FROM menu WHERE Item_Name = ?";
+                $stmt = $con->prepare($query);
+                $stmt->bind_param("s", $item_name);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-                echo "<tr>";
-                echo "<td>" . $i . "</td>";
-                echo "<td>" . $itemName . "</td>";
-                echo "<td>" . $itemPrice . "</td>";
-                echo "<td>" . $itemStock . "</td>";
-                echo "<td>
-                        <div class='quantity-selector'>
-                            <button type='button' class='btn-decrease' onclick='decreaseQuantity(\"$inputName\")'>-</button>
-                            <input type='number' name='quantities[$itemName]' id='$inputName' value='0' min='0' max='$itemStock' class='quantity-input' readonly>
-                            <button type='button' class='btn-increase' onclick='increaseQuantity(\"$inputName\", $itemStock)'>+</button>
-                        </div>
-                    </td>";
-                echo "</tr>";
-                $i++;
+                if ($result->num_rows > 0) {
+                    // Item already exists
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Duplicate Item',
+                            text: 'Item already exists in the menu! Please add a non-existing item instead.',
+                            confirmButtonText: 'OK'
+                        });
+                    </script>";
+                } else {
+                    // Insert new item into the database
+                    $insert_query = "INSERT INTO menu (Item_Name, Item_Price, Item_Stock) VALUES (?, ?, ?)";
+                    $insert_stmt = $con->prepare($insert_query);
+                    $insert_stmt->bind_param("sss", $item_name, $item_price, $item_stock);
+                
+                    if ($insert_stmt->execute()) {
+                        echo "<script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Item added successfully!',
+                                confirmButtonText: 'OK'
+                            });
+                        </script>";
+                    } else {
+                        echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error adding item. Please try again.',
+                                confirmButtonText: 'OK'
+                            });
+                        </script>";
+                    }
+                }
+
+                $stmt->close();
+                $con->close();
             }
-            echo "</table>";
-            mysqli_close($con);
             ?>
-            <br>
-            <input type="submit" class='btn btn-success' value="Purchase">
+
+            <form name="frmbuy" action="" method="POST">
+                <table>
+                    <tr align="center">
+                        <th width="80">Sl No.</th>
+                        <th>Item Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="text" name="Item_Name" required></td>
+                        <td><input type="text" name="Item_Price" required></td>
+                        <td><input type="text" name="Item_Stock" required></td>
+                    </tr>
+                </table>
+                <br>
+                <input type="submit" class="btn btn-success" value="Add Item">
+                <input type="reset" class="btn btn-danger" value="Reset">
             </form>
+
         </div>
     </div>
 </div>
-<!-- END MAIN CONTENT-->
-<!-- END PAGE CONTAINER-->
-</div>
 
-<!-- Add CSS styles for styling the buttons -->
-<style>
-    .quantity-selector {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+            <!-- END MAIN CONTENT-->";
+            
+            <!-- END PAGE CONTAINER-->
+        </div>
+		
 
-    .quantity-input {
-        width: 50px;
-        text-align: center;
-        font-size: 16px;
-        padding: 5px;
-        border: none;
-        border-top: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        outline: none;
-        transition: background-color 0.2s ease, border-color 0.3s ease;
-    }
-
-    .quantity-input:focus {
-        background-color: #f0f8f0;
-        border-color: #218838;
-    }
-
-    .btn-decrease, .btn-increase {
-        background-color: transparent; /* Remove background */
-        color: #28a745; /* Green text color */
-        border: none; /* Remove border */
-        font-size: 18px;
-        width: 30px; /* Adjust width */
-        height: 30px; /* Adjust height */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out; /* Smooth transition for all effects */
-        margin: 0 8px;
-    }
-
-    .btn-decrease:hover, .btn-increase:hover {
-        color: white; /* Change text to white on hover */
-        background-color: #28a745; /* Green background on hover */
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
-        transform: translateY(-4px); /* Lift effect on hover */
-    }
-
-    .btn-decrease:active, .btn-increase:active {
-        background-color: #218838; /* Darker green background on click */
-        transform: scale(0.95); /* Shrink on click */
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow on click */
-    }
-</style>
-
-<!-- JavaScript to handle quantity increment and decrement -->
-<script>
-    function increaseQuantity(id, maxStock) {
-        let quantityInput = document.getElementById(id);
-        let currentValue = parseInt(quantityInput.value);
-        if (currentValue < maxStock) {
-            quantityInput.value = currentValue + 1;
-        }
-    }
-
-    function decreaseQuantity(id) {
-        let quantityInput = document.getElementById(id);
-        let currentValue = parseInt(quantityInput.value);
-        if (currentValue > 0) {
-            quantityInput.value = currentValue - 1;
-        }
-    }
-</script>
-
-
+    </div>
 
     <!-- Jquery JS-->
     <script src="vendor/jquery-3.2.1.min.js"></script>
@@ -410,6 +390,8 @@ body{
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
+
+
 
 </body>
 

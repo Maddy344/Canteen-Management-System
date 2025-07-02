@@ -250,16 +250,11 @@ if (count($_POST) > 0) {
           document.getElementById("pwdField").focus();
           return false;
         }
-        return true;
-      }
 
-      function validatePhone() {
-        let phone = document.forms[0]["phone"].value;
+        // Phone validation (only numbers, minimum 10 digits)
         const phonePattern = /^[0-9]{10,}$/;
         if (!phonePattern.test(phone)) {
-          showAlert("Phone number must be at least 10 digits long.", "error");
-          document.getElementById("phoneField").focus();
-          return false;
+            message += "Phone number must be at least 10 digits long and contain only numbers.\n"; 
         }
         return true;
       }

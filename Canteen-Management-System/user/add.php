@@ -42,9 +42,9 @@ if($_SESSION["id"])
 				exit;
 		}
 		echo "<script>alert('Invalid user Credintial')
-	window.location.href='AddMoney.php'
-	</script>";
-	exit;   
+		window.location.href='AddMoney.php'
+		</script>";
+		exit;   
     }
  }
 

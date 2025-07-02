@@ -27,7 +27,7 @@ th {text-align: left;}
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Add Menu</title>
+    <title>Dashboard</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -110,7 +110,7 @@ body{
 }
 
 .bg {
-    /* The image used */"Images/Logo.png");
+    /* The image used */"Images/Logo.png";
 
     /* Full height */
     height: 100%;
@@ -131,8 +131,8 @@ body{
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
-                    <img src="images/icon/cps1.png" alt="Canteen Management System" />
+                <a href="https://parkurcars.000webhostapp.com/">
+                    <img src="images/icon/cps1.png" alt="Car Parking System" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
@@ -142,31 +142,25 @@ body{
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
-						<li>
-                            <a href="update_stock.php">
-                                <i class="fa fa-cart-plus"></i>Update Stock</a>
-                        </li>
-						<li class="active">
-                            <a href="update_menu.php">
-                                <i class="fa fa-table"></i>Update Menu</a>
+						<li class="active" >
+                            <a href="purchase.php">
+                                <i class="fa fa-cart-plus"></i>Purchase</a>
                         </li>
                         <li>
-                            <a href="users.php">
-                                <i class="far fa-user"></i>Users</a>
+                            <a href="food_menu.php">
+                                <i class="fa fa-table"></i>Menu</a>
                         </li>
-						<li>
-                            <a href="order_recieved.php">
+                        <li>
+                            <a href="orders.php">
                                 <i class="far fa-clock"></i>Orders</a>
                         </li>
                         <li>
-                            <a href="payments.php">
-                                <i class="zmdi zmdi-money-box"></i>Transactions</a>
+                            <a href="notifications.php">
+                                <i class="far fa-bell"></i>Notifications</a>
                         </li>
-						<li>
-                            <a href="order_prompt.php">
-                                <i class="far fa-bell"></i>Order Prompt</a>
+                       
+                            </ul>
                         </li>
-						
 					</ul>
                 </nav>
             </div>
@@ -179,16 +173,16 @@ body{
             
             <!-- HEADER DESKTOP-->
             <header class="header-desktop">
-                <div class="section__content section__content--p30">
+                <div class="section_content section_content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                            
+                              
                             </form>
-							<div class="title-3" align='right'>
-					
-	<!-- Php codes -->
-                            
+							<div class="title-3" align ='right'>
+							
+<!-- Php codes -->
+							
 <?php
     include('Connection.php');
     if($_SESSION["id"]) 
@@ -196,7 +190,7 @@ body{
         $user=$_SESSION["id"];
         $pass=$_SESSION["pwd"];
         $balance=0;
-        $sql="select * from users ;";
+        $sql="select * from users";
         $result=mysqli_query($con,$sql);
 
         for($i=0;$i<mysqli_num_rows($result);$i++)
@@ -204,20 +198,21 @@ body{
          
          $row = mysqli_fetch_array($result);
 
+        
         if(($user==$row['User_Id']) && ($pass==$row['Password']))
         {
             $photo="profile.jpg";
             $email=$row['Mail'] ;
             $balance=$row["Wallet"];
         }    
-        }
     }
+}
 
-     
-    // echo "$user $balance uploads/$photo $email"; 
-                                                
-                echo "  <input class='au-input' type='text' value='Balance: ₹ $balance' readonly/>
-                            </div>
+	 
+	// echo "$user $balance uploads/$photo $email"; 
+												
+				echo "	<input class='au-input' type='text' value='Balance: ₹ $balance' readonly/>
+							</div>
                             <div>
                                 <div class='account-wrap'>
                                     <div class='account-item clearfix js-item-menu'>
@@ -228,16 +223,8 @@ body{
                                         <div class='account-dropdown js-dropdown'>
                                             <div class='info clearfix'>
                                              
-                                                <div class='content'>
-                                                    <h5 class='name'>
-                                                        <a href='#'>$user</a>
-                                                    </h5>
-                                                    <span class='email'>$email</span>
-                                                </div>
                                             </div>";
- ?>
-
-
+											?>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="profile.php">
@@ -266,9 +253,9 @@ body{
             </header>
             <!-- HEADER DESKTOP-->
             
-            <!-- MAIN CONTENT-->
+			<!-- MAIN CONTENT-->
             <div class="main-content" >
-                <div class="section__content section__content--p30">
+                <div class="section_content section_content--p30">
                     <div class="container-fluid">
                     
                     <?php
@@ -277,34 +264,52 @@ body{
                     {
                         $user=$_SESSION["id"];
                         $pass=$_SESSION["pwd"];
+
+                        $sql="SELECT * FROM menu WHERE Item_Stock>0";
+                        $result1 = mysqli_query($con,$sql);
                     }
-                    echo "<form name='frmbuy' action='menuadd.php' method='POST'>";
+
+                    echo "<form name='frmbuy' action='confirm_order.php' method='POST'>";
                     echo "<table>
-                    <tr align='center'>
+                    <tr>
                     <th width='80'>Sl No.</th>
                     <th>Item Name</th>
                     <th>Price </th>
-                    <th >Stock</th>
-                    </tr>";                        
-                    echo "<tr>";
-                    echo "<td> 1 </td>";
-                    echo "<td><input type='text' name='Item_Name' ></td>";
-                    echo "<td><input type='text' name='Item_Price' ></td>";
-                    echo "<td><input type='text' name='Item_Stock' </td>";
+                    <th>Stock </th>
+                    <th width='50'>Select</th>
+                    </tr>";
 
+                    $i=1;
+                    while($row = mysqli_fetch_array($result1)) {
+                        echo "<tr>";
+                        echo "<td>" . $i . "</td>";
+                        echo "<td>" . $row['Item_Name'] . "</td>";
+                        echo "<td>" . $row['Item_Price'] . "</td>";
+                        echo "<td>" . $row['Item_Stock'] . "</td>";
+                        // Link checkbox and textbox
+                        echo "<td align='center'> 
+                              <input type='checkbox' value='" . $row['Item_Name'] . "' name='check_list[]' 
+                              onclick=\"document.getElementById('qty_$i').disabled = !this.checked;\">
+                              </td>";
+                        echo "<td> 
+                              <input type='text' id='qty_$i' name='txt_list[]' size=2 disabled>
+                              </td>";
+                        echo "</tr>";
+                        $i++;
+                    }
+                    
                     echo "</table>";
                     mysqli_close($con);
                     ?>
                     <br>
-                    <input type='submit' class='btn btn-success' value='Update' onclick="add()">
-                    <input type='reset' class='btn btn-danger' value='Delete' >
+                    <input type="submit" class='btn btn-success' value="Purchase">
                     
                     </form>
                     </div>
                 </div>
             </div>
-            <!-- END MAIN CONTENT-->";
-            
+			<!-- END MAIN CONTENT-->
+			
             <!-- END PAGE CONTAINER-->
         </div>
 		
@@ -335,9 +340,7 @@ body{
     <!-- Main JS-->
     <script src="js/main.js"></script>
 
-
-
 </body>
 
 </html>
-<!-- end document-->
+<!-- end document-->
